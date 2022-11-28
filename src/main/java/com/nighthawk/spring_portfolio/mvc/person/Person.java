@@ -74,7 +74,6 @@ public class Person {
     @NotEmpty
     private String eyecolor; 
 
-    @NotEmpty
     private Boolean handedness;
 
     /* HashMap is used to store JSON for daily "stats"
