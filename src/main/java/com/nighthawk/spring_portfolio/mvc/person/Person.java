@@ -102,7 +102,8 @@ public class Person {
     }
 
     public String toString(){
-        return ("{ \"email\": " + this.email + ", " + "\"password\": " + this.password + ", " + "\"name\": " + this.name + ", " + "\"dob\": " + this.dob + ", " + "\"height\": " + this.height + ", " + "\"eye color\": " + this.eyecolor + ", " + "\"handedess\": " + this.handedness + " }" );
+        return ("{ \"email\": " + this.email + ", " + "\"password\": " + this.password + ", " + "\"name\": " + this.name + ", " + 
+        "\"dob\": " + this.dob + ", " + "\"height\": " + this.height + ", " + "\"eye color\": " + this.eyecolor + ", " + "\"handedess\": " + this.handedness + " }" );
     }
 
 
@@ -115,6 +116,16 @@ public class Person {
 
     public String getAgeToString(){ //turns it into a string 
         return ("{ \"name\": " + this.name + " ," + "\"age\": " + this.getAge() + " }" );
+    }
+
+    public String getEyeColor() { 
+        if (this.eyecolor != null) {
+            return this.eyecolor; }
+        return "null";
+    }
+
+    public String getEyeColorToString() {
+        return ("{ \"name\": " + this.name + " ," + "\"eyecolor\": " + this.getEyeColor() + " }" );
     }
 
 

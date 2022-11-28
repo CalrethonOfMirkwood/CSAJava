@@ -53,6 +53,16 @@ public class PersonApiController {
         }
         return null;       
     }
+
+    @GetMapping("/getEyeColor/{id}")
+    public String getEyeColor(@PathVariable long id) {
+        Optional<Person> optional = repository.findById(id);
+        if (optional.isPresent()) {  // Good ID
+            Person person = optional.get();  // value from findByID
+            return person.getEyeColorToString();
+        }
+        return null;       
+    }
     /*
     DELETE individual Person using ID
      */
@@ -116,6 +126,7 @@ public class PersonApiController {
         Optional<Person> optional = repository.findById((id));
         if (optional.isPresent()) {  // Good ID
             Person person = optional.get();  // value from findByID
+
             // Extract Attributes from JSON
             Map<String, Object> attributeMap = new HashMap<>();
             for (Map.Entry<String,Object> entry : stat_map.entrySet())  {
@@ -123,11 +134,13 @@ public class PersonApiController {
                 if (!entry.getKey().equals("date") && !entry.getKey().equals("id"))
                     attributeMap.put(entry.getKey(), entry.getValue());
             }
+
             // Set Date and Attributes to SQL HashMap
             Map<String, Map<String, Object>> date_map = person.getStats();
             date_map.put( (String) stat_map.get("date"), attributeMap );
             person.setStats(date_map);  // BUG, needs to be customized to replace if existing or append if new
             repository.save(person);  // conclude by writing the stats updates
+
             // return Person with update Stats
             return new ResponseEntity<>(person, HttpStatus.OK);
         }
