@@ -30,7 +30,7 @@ public class Calculator {
         OPERATORS.put("^", 2);
         OPERATORS.put("*", 3);
         OPERATORS.put("/", 3);
-        OPERATORS.put("%", 3);
+        OPERATORS.put("MOD", 3); // % is invalid
         OPERATORS.put("+", 4);
         OPERATORS.put("-", 4);
     }
@@ -136,8 +136,7 @@ public class Calculator {
                 case "-":
                 case "*":
                 case "/":
-                case "%":
-                case "^":
+                case "MOD": // % is an invalid character, messes up API
                 case "POW":
                     // While stack
                     // not empty AND stack top element
@@ -153,17 +152,7 @@ public class Calculator {
                     // Push the new operator on the stack
                     tokenStack.push(token);
                     break;
-                case "pi":
-                case "PI":
-                case "Pi":
-                    // recognize pi variable and replace that token with it
-                    this.reverse_polish.add("3.141592653589793238");
-                    break;
-                case "g":
-                case "G":
-                    // Added a g value to represent earth's gravitational force
-                    this.reverse_polish.add("9.8");
-                    break;
+
                 default: 
                     try
                     {
@@ -220,13 +209,12 @@ public class Calculator {
                     case "/":
                         result = b / a;
                         break;
-                    case "%":
-                        result = b % a;
-                        break;
-                    case "POW": // ^ throws error, probably an invalid character somewhere down the line
-                    case "Pow":
-                    case "pow":
+                    case "POW": // ^ throws, error it's probably an invalid character somewhere down the line
+                        // Using Math.pow() function because it supports doubles
                         result = Math.pow(b,a);
+                        break;
+                    case "MOD":
+                        result = b % a;
                         break;
                     default:
                         break;
