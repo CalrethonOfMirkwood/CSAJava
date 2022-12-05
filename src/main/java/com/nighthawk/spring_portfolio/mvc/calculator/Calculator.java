@@ -26,11 +26,10 @@ public class Calculator {
     {
         // Map<"token", precedence>
         OPERATORS.put("RT", 1);
-        OPERATORS.put("POW", 2);
-        OPERATORS.put("^", 2);
+        OPERATORS.put("POW", 2); // ^ throws error
         OPERATORS.put("*", 3);
         OPERATORS.put("/", 3);
-        OPERATORS.put("MOD", 3); // % is invalid
+        OPERATORS.put("MOD", 3); // % throws error
         OPERATORS.put("+", 4);
         OPERATORS.put("-", 4);
     }
@@ -49,6 +48,9 @@ public class Calculator {
         // original input
         this.expression = expression;
 
+        // check that parentheses are valid
+        this.checkParentheses();
+
         // parse expression into terms
         this.termTokenizer();
 
@@ -57,6 +59,19 @@ public class Calculator {
 
         // calculate reverse polish notation
         this.rpnToResult();
+    }
+
+    private void checkParentheses() {
+        int l = 0;
+        int r = 0;
+        for (int i = 0; i < this.expression.length(); i++) {
+            if (this.expression.charAt(i) == '(') l++;
+            else if (this.expression.charAt(i) == ')') r++;
+        }
+
+        if (l != r) {
+            throw new RuntimeException("Parentheses syntax error");
+        }
     }
 
     // Test if token is an operator
@@ -136,7 +151,7 @@ public class Calculator {
                 case "-":
                 case "*":
                 case "/":
-                case "MOD": // % is an invalid character, messes up API
+                case "MOD": 
                 case "POW":
                     // While stack
                     // not empty AND stack top element
@@ -154,12 +169,10 @@ public class Calculator {
                     break;
 
                 default: 
-                    try
-                    {
+                    try {
                         Double.parseDouble(token);
                     }
-                    catch(NumberFormatException e)
-                    {
+                    catch(NumberFormatException e) {
                         // Resolve variable to 0 in order for the rest of the function to successfully run.
                         this.reverse_polish.add("0");
                         this.expression = "Error with parsing your expression \'" + this.expression + "\'. Please enter valid numbers, operators, or variables and try again.";
@@ -209,8 +222,7 @@ public class Calculator {
                     case "/":
                         result = b / a;
                         break;
-                    case "POW": // ^ throws, error it's probably an invalid character somewhere down the line
-                        // Using Math.pow() function because it supports doubles
+                    case "POW": // ^ throws error in API, it's probably an invalid character somewhere down the line
                         result = Math.pow(b,a);
                         break;
                     case "MOD":
@@ -219,9 +231,6 @@ public class Calculator {
                     default:
                         break;
                 }
-
-                // Pop the two top entries
-
 
                 // Push intermediate result back onto the stack
                 calcStack.push( result );
