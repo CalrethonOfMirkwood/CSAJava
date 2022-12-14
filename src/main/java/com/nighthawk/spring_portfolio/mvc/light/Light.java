@@ -2,6 +2,7 @@ package com.nighthawk.spring_portfolio.mvc.light;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class Light {
     boolean on;
@@ -42,6 +43,12 @@ public class Light {
     public Light() {
         int maxColor = 255;
         int effect = 9;
+
+        //Randomly on or off
+        Random a = new Random();
+        this.on = a.nextBoolean();
+
+        // Randomly assign colors and effects
         this.red = (short) (Math.random()*(maxColor+1));
         this.green = (short) (Math.random()*(maxColor+1));
         this.blue = (short) (Math.random()*(maxColor+1));
@@ -60,9 +67,16 @@ public class Light {
          );
     }
 
+    public void setRGB(short r, short g, short b) {
+        this.red = r;
+        this.green = g;
+        this.blue = b;
+    }
+
     /* toString output as key/values */
     public String toString() {
         return( "{" + 
+            "\"on\": " + on + "," +
             "\"red\": " + red + "," +
             "\"green\": " +  green + "," + 
             "\"blue\": " + blue + "," +
@@ -71,7 +85,7 @@ public class Light {
     }
 
     public boolean isOn() {
-        return on;
+        return this.on;
     }
 
     public void setOn(boolean on) {
